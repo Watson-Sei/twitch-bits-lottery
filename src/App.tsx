@@ -25,7 +25,7 @@ export default function App() {
     }
     if (cookies.access_token) {
       // bits
-      axios.get(`https://api.twitch.tv/helix/bits/leaderboard?count=2&period=all`, {
+      axios.get(`https://api.twitch.tv/helix/bits/leaderboard?count=100&period=month&started_at=2022-09-20T00:00:00.263Z`, {
         headers: {
           'Authorization': `Bearer ${cookies.access_token}`,
           'Client-Id': 'vz1lvlrmn3jw2fpv16cqs60t8pbtda'
@@ -40,7 +40,7 @@ export default function App() {
           console.log(error)
         })
       // subscription
-      axios.get(`https://api.twitch.tv/helix/subscriptions?broadcaster_id=480024929`, {
+      axios.get(`https://api.twitch.tv/helix/subscriptions?broadcaster_id=524745622`, {
         headers: {
           'Authorization': `Bearer ${cookies.access_token}`,
           'Client-Id': 'vz1lvlrmn3jw2fpv16cqs60t8pbtda'
