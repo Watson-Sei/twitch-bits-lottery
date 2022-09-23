@@ -8,8 +8,8 @@ import {bitsData, subsData} from './mock/twitch';
 import {tiers} from './mock/const';
 
 export default function App() {
-  const mockBits = bitsData
-  const mockSubs = subsData
+  // const mockBits = bitsData
+  // const mockSubs = subsData
 
   const [cookies, setCookie, removeCookie] = useCookies();
   const [bits, setBits] = useState<any[]>([]);
@@ -32,8 +32,8 @@ export default function App() {
         }
       })
         .then((res) => {
-          // setData(res.data.data)
-          setBits(mockBits)
+          setBits(res.data.data)
+          // setBits(mockBits)
           addUser(0);
         })
         .catch((error) => {
@@ -47,8 +47,8 @@ export default function App() {
         }
       })
         .then((res) => {
-          // setSubs(res.data.data)
-          setSubs(mockSubs);
+          setSubs(res.data.data)
+          // setSubs(mockSubs);
           addUser(1)
         })
     }
@@ -58,7 +58,7 @@ export default function App() {
     switch (kind) {
       // ビッツ
       case 0:
-        for (const d of bitsData) {
+        for (const d of bits) {
           let count = 0;
           for (let i = 0; i < users.length; i++) {
             if (users[i].user_id === d.user_id) {
@@ -77,7 +77,7 @@ export default function App() {
         break
       // サブスク
       case 1:
-        for (const d of subsData) {
+        for (const d of subs) {
           let count = 0;
           for (let i = 0; i < users.length; i++) {
             if (users[i].user_id === d.user_id) {
