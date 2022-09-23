@@ -1,4 +1,5 @@
 import React from 'react'
+import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom/client'
 import {
   BrowserRouter,
@@ -8,13 +9,13 @@ import {
 import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/">
-          <Route index element={<App />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
+  <CookiesProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            <Route index element={<App />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </CookiesProvider>
 )
