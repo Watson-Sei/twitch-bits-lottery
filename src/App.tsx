@@ -20,10 +20,20 @@ export default function App() {
 
   useEffect(() => {
     if (hash.includes('#access_token')) {
-      setCookie('access_token', hash.replace('#access_token=', '').replace('&scope=bits%3Aread+channel%3Aread%3Asubscriptions&token_type=bearer', ''))
+      setCookie('access_token', hash.replace('#access_token=', '').replace('&scope=bits%3Aread+channel%3Aread%3Asubscriptions+user%3Aread%3Aemail&token_type=bearer', ''))
       window.location.href = '/'
     }
     if (cookies.access_token) {
+      // user info 
+      axios.get(`https://api.twitch.tv/helix/users`, {
+        headers: {
+          'Authorization': `Bearer ${cookies.access_token}`,
+          'Client-Id': 'vz1lvlrmn3jw2fpv16cqs60t8pbtda'
+        }
+      })
+        .then((res) => {
+          setCookie('user_id', res.data.data[0].id)
+        })
       // bits
       axios.get(`https://api.twitch.tv/helix/bits/leaderboard?count=100&period=month&started_at=2022-09-20T00:00:00.263Z`, {
         headers: {
@@ -32,6 +42,7 @@ export default function App() {
         }
       })
         .then((res) => {
+          console.log(res.data.data)
           setBits(res.data.data)
           // setBits(mockBits)
           addUser(0);
@@ -40,13 +51,14 @@ export default function App() {
           console.log(error)
         })
       // subscription
-      axios.get(`https://api.twitch.tv/helix/subscriptions?broadcaster_id=524745622`, {
+      axios.get(`https://api.twitch.tv/helix/subscriptions?broadcaster_id=${cookies.user_id}`, {
         headers: {
           'Authorization': `Bearer ${cookies.access_token}`,
           'Client-Id': 'vz1lvlrmn3jw2fpv16cqs60t8pbtda'
         }
       })
         .then((res) => {
+          console.log(res.data.data)
           setSubs(res.data.data)
           // setSubs(mockSubs);
           addUser(1)
@@ -100,7 +112,7 @@ export default function App() {
       console.log('You are already logged in.')
     } else {
       console.log(`${import.meta.env.VITE_VERCEL_URL}`)
-      window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=vz1lvlrmn3jw2fpv16cqs60t8pbtda&redirect_uri=${import.meta.env.VITE_VERCEL_URL}&response_type=token&scope=bits:read channel:read:subscriptions`
+      window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=vz1lvlrmn3jw2fpv16cqs60t8pbtda&redirect_uri=${import.meta.env.VITE_VERCEL_URL}&response_type=token&scope=bits:read channel:read:subscriptions user:read:email`
     }
   }
 
