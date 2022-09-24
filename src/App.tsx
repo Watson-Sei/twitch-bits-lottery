@@ -51,6 +51,7 @@ export default function App() {
           console.log(error)
         })
       // subscription
+      console.log('broadccaster_id: ',cookies.user_id)
       axios.get(`https://api.twitch.tv/helix/subscriptions?broadcaster_id=${cookies.user_id}`, {
         headers: {
           'Authorization': `Bearer ${cookies.access_token}`,
@@ -62,6 +63,9 @@ export default function App() {
           setSubs(res.data.data)
           // setSubs(mockSubs);
           addUser(1)
+        })
+        .catch((error) => {
+          console.log(error)
         })
     }
   }, [])
@@ -117,7 +121,8 @@ export default function App() {
   }
 
   const logout = () => {
-    removeCookie('access_token')
+    removeCookie('access_token');
+    removeCookie('user_id');
     console.log('Logout Done');
   }
 
